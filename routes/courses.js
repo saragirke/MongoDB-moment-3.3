@@ -48,26 +48,25 @@ router.get('/', function(req, res, next) {
   });
 });
 
-/********************************************* 
- * Delete unique user id
- *********************************************/
-router.delete('/:id', function(req, res, next) {
+/*****************************/
+ // GET course by ID
+ /****************************/
+router.get('/:id', function(req, res, next) {
+
     var id = req.params.id;
-    
-    // Delete user _id from db
-    Course.deleteOne({ "_id": id }, function (err) {
-        if (err) return handleError(err);
-    });
-    
-    // Get the new user list from db as response data
+    var ind = -1;
+
     Course.find(function(err, courses) {
         if(err) return console.error(err);
-    
-        var jsonObj = JSON.stringify(courses);
-        res.contentType('application/json');
-        res.send(jsonObj);
-    });
+    for(var i=0; i < courses.length; i++){
+        if(courses[i]._id == id) ind = i; // Hitta arrayen med index som har _id = id
+    } 
+    console.log(courses[ind]);
+    res.contentType('application/json');
+    res.send(ind>=0?courses[ind]:'{}'); // Om vi hittar kursen skicka det som svar annars tom array
 });
+});
+
 
 
 /********************************************* 
@@ -91,6 +90,34 @@ console.log("test" + req.body.name);
     });
 
 	var jsonObj = JSON.stringify(course1);
+	res.contentType('application/json');
+	res.send(jsonObj);
+
+});
+
+/********************************************* 
+ * Update course
+ *********************************************/
+ router.put('/:id', function(req, res, next) {
+    var id = req.params.id;
+    // Create a new user
+    var course2 = new Course({ 
+        id: req.body.id,
+        name: req.body.name, 
+        code: req.body.code,
+        syllabus: req.body.syllabus,
+        progression: req.body.progression,
+        term: req.body.term
+
+    });	
+console.log("test" + req.body.name);
+
+    // Save new user to db
+    course2.save(function(err) {
+        if(err) return console.error(err);
+    });
+
+	var jsonObj = JSON.stringify(course2);
 	res.contentType('application/json');
 	res.send(jsonObj);
 

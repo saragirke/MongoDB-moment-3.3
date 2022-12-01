@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", function(){
                     var jsonData = JSON.parse( data );
                     var writeCourses = "<div class='divt'><h1>Kurser</h1><table><th>Namn</th><th>Kurskod</th><th>Kursplan</th><th>Progression</th><th>Termin</th><th>Radera</th><th>Uppdatera</th>";
                     for(var i=0; i < jsonData.length; i++){
-                        writeCourses += "<tr><td id='courseName'  contenteditable>"+jsonData[i].name+"</td><td id='courseCode' contenteditable>"+jsonData[i].code+"</td><td id='courseSyll' contenteditable>"+ "<a href=" + jsonData[i].syllabus + "target='_blank'>Länk</a>" + "</td><td id='courseProg' contenteditable>"+jsonData[i].progression+"</td><td id='courseTerm' contenteditable>"+jsonData[i].term+
+                        writeCourses += "<tr><td id='courseName' + jsonData[i]._id  contenteditable>"+jsonData[i].name+"</td><td id='courseCode' contenteditable>"+jsonData[i].code+"</td><td id='courseSyll' contenteditable>"+ "<a href=" + jsonData[i].syllabus + "target='_blank'>Länk</a>" + "</td><td id='courseProg' contenteditable>"+jsonData[i].progression+"</td><td id='courseTerm' contenteditable>"+jsonData[i].term+
                             "</td><td><img src='images/trash.png' class='delete'  id=" + jsonData[i]._id + "/></td> <td><img src='images/pencil.png' alt='update course' class='update' id=" + jsonData[i]._id + "/></td> </tr>";    
                     }
                     writeCourses += "</table></div>";
@@ -84,13 +84,13 @@ document.getElementById("create").addEventListener("click", (e) => {
 /********************************************************************* */
 function updateCourse(e) {
     
-    let url=baseURL+e.target.id;
+    let url=baseURL+e.target.dataset.id;
 
     //Lagrad id som variabel
     let id = e.target.id;
     console.log("Hej ID: " + id);
-    /*
-    let Cname= document.getElementById("courseName".id).value;
+    
+    let Cname= document.getElementById("coursename"+ id).value;
     let Ccode= document.getElementById("courseCode"+ id);
     let Cprogression= document.getElementById("courseProg" + id);
     let Csyllabus= document.getElementById("courseSyll" + id);
@@ -99,21 +99,21 @@ function updateCourse(e) {
    console.log(Cname); 
 
     var obj = {};
-    obj.name = Cname;
+    obj.name = Cname,
     obj.code = Ccode;
     obj.syllabus = Cprogression;
     obj.progression = Csyllabus;
     obj.term = Cterm; 
-    obj.id = id;*/ //??????
+    obj.id = id; //??????
     
 
-    /* Objektet som skall lagras i databasen*/
+    /* Objektet som skall lagras i databasen
     var obj = {};
-    obj.name = document.getElementById("courseName" +id).innerHTML;
-    obj.code = document.getElementById("courseCode" +id).value;
-    obj.syllabus = document.getElementById("courseSyll" +id).value;
+    obj.name = document.getElementById("courseName" + id).innerHTML;
+    obj.code = document.getElementById("courseCode" + id).value;
+    obj.syllabus = document.getElementById("courseSyll" + id).value;
     obj.progression = document.getElementById("courseProg" +id).value;
-    obj.term = document.getElementById("courseTerm" +id).value; 
+    obj.term = document.getElementById("courseTerm" + id).value; */
 
     fetch(url, {method: 'PUT', 
                     body: JSON.stringify(obj), 	
