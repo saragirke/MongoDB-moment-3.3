@@ -1,1 +1,4 @@
-# MongoDB-moment-3.3
+# MongoDB-moment-3.3 
+npm install 
+
+npm start / nodemon
